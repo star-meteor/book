@@ -1,8 +1,125 @@
-# git简介
+# 安装git      
+
+[廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/896043488029600)
+
+## 在Windows上安装Git
+
+在Windows上使用Git，可以从Git官网直接[下载安装程序](https://git-scm.com/downloads)，然后按默认选项安装即可。
+
+安装完成后，在开始菜单里找到“Git”->“Git Bash”，蹦出一个类似命令行窗口的东西，就说明Git安装成功！
+
+![install-git-on-windows](https://www.liaoxuefeng.com/files/attachments/919018718363424/0)
+
+安装完成后，还需要最后一步设置，在命令行输入：
+
+```
+$ git config --global user.name "Your Name"
+$ git config --global user.email "email@example.com"
+```
+
+注意`git config`命令的`--global`参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。
+
+# 创建版本库
+
+## 创建版本库
+
+* 选择一个合适的地方，创建一个空目录
+
+  ```js
+  $ mkdir learngit
+  $ cd learngit
+  $ pwd    //显示当前目录
+  /Users/michael/learngit
+  ```
+
+* 通过`git init`命令把这个目录变成Git可以管理的仓库
+
+## 把文件添加到版本库
+
+  所有的版本控制系统，其实只能跟踪文本文件的改动,而图片、视频这些二进制文件，虽然也能由版本控制系统管理，但没法跟踪文件的变化，只能把二进制文件每次改动串起来，也就是只知道图片从100KB改成了120KB，但到底改了啥，版本控制系统不知道，也没法知道
+
+把一个文件放到Git仓库只需要两步。
+
+第一步，用命令`git add`告诉Git，把文件添加到仓库：
+
+```
+$ git add readme.txt
+```
+
+执行上面的命令，没有任何显示，这就对了，Unix的哲学是“没有消息就是好消息”，说明添加成功。
+
+第二步，用命令`git commit`告诉Git，把文件提交到仓库：
+
+```
+$ git commit -m "wrote a readme file"
+[master (root-commit) eaadf4e] wrote a readme file
+ 1 file changed, 2 insertions(+)
+ create mode 100644 readme.txt
+```
+
+简单解释一下`git commit`命令，`-m`后面输入的是本次提交的说明，可以输入任意内容，当然最好是有意义的，这样你就能从历史记录里方便地找到改动记录
 
 # 时光机穿梭
 
+## 版本回退
+
+## 工作区和暂存区
+
+## 管理修改
+
+## 撤销修改
+
+## 删除文件
+
 # 远程仓库
+
+## GitHub账户
+
+### 注册gitHub账户
+
+### SSH加密
+
+由于你的本地Git仓库和GitHub仓库之间的传输是通过SSH加密的，所以，需要设置GitHub
+
+第1步：创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有`id_rsa`和`id_rsa.pub`这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
+
+```
+$ ssh-keygen -t rsa -C "youremail@example.com"
+```
+
+你需要把邮件地址换成你自己的邮件地址，然后一路回车，使用默认值即可，由于这个Key也不是用于军事目的，所以也无需设置密码。
+
+如果一切顺利的话，可以在用户主目录里找到`.ssh`目录，里面有`id_rsa`和`id_rsa.pub`两个文件，这两个就是SSH Key的秘钥对，`id_rsa`是私钥，不能泄露出去，`id_rsa.pub`是公钥，可以放心地告诉任何人。
+
+第2步：登陆GitHub，打开“Account settings”，“SSH Keys”页面：
+
+然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴`id_rsa.pub`文件的内容：
+
+![github-addkey-1](https://www.liaoxuefeng.com/files/attachments/919021379029408/0)
+
+点“Add Key”，你就应该看到已经添加的Key：
+
+![github-addkey-2](https://www.liaoxuefeng.com/files/attachments/919021395420160/0)
+
+## 添加远程库
+
+* 在GitHub创建一个Git仓库
+
+* 关联一个远程库  `git remote add origin git@server-name:path/repo-name.git`
+* 第一次把本地库的所有内容推送到远程库上 `git push -u origin master`
+* 之后 git push origin master
+* 删除远程库
+  * `git remote -v`查看远程库信息：
+  *  git remote rm origin    解除了本地和远程的绑定关系，并不是物理上删除了远程库。远程库本身并没有任何改动。
+  * 要真正删除远程库，需要登录到GitHub，在后台页面找到删除按钮再删除。
+
+## 从远程库克隆
+
+* 命令`git clone`克隆一个本地库  `git clone git@github.com:michaelliao/gitskills.git`
+
+  
+
+
 
 # 分支管理
 
@@ -138,7 +255,52 @@ git log --graph --pretty=oneline --abbrev-commit   //查看提交记录
 
 ## 创建标签
 
+* 首先，切换到要打标签的分支
+
+* `git tag <name>`就可以打一个新标签
+
+* `git tag`查看所有标签
+
+* 忘记打标签
+
+  * 找到历史提交的记录 
+
+    `git log --pretty=oneline --abbrev-commit`
+
+  * 指定commit Id 打标签
+
+    `git tag v0.9 f52c633`
+
+* 标签不是按时间顺序列出，而是按字母排序的。可以用`git show <tagname>`查看标签信息：
+
+  `git show v0.9`
+
+* 创建带有说明的标签，用`-a`指定标签名，`-m`指定说明文字
+
+  `git tag -a v0.1 -m "version 0.1 released" 1094adb`
+
 ## 操作标签
 
+* 删除标签
 
+  * 删除本地标签
 
+  `git tag -d v0.1`
+
+  因为创建的标签都只存储在本地，不会自动推送到远程。所以，打错的标签可以在本地安全删除。
+
+  * 删除远程标签
+
+    * 先本地删除
+
+    * 从远程删除。删除命令也是push
+
+      git push origin :refs/tags/v0.9
+
+* 推送标签到远程
+
+  * 如果要推送某个标签到远程，使用命令`git push origin <tagname>`：git push origin v1.0
+
+  * 一次性推送全部尚未推送到远程的本地标签
+
+    git push origin --tags
